@@ -55,12 +55,12 @@ class Mariadb(IdP):
     def _load_user_allowed_hosts(self):
         if not self.__connect():
             return
-        req = "SELECT h.name, h.hostname, h.port, hg.name as hostgroup FROM hosts as h" + 
-            "JOIN hosts_hostgroups as hh ON hh.hostsId = h.id" + 
-            "JOIN hostgroups as hg ON hg.id = hh.hostgroupsId" +
-            "JOIN hosts_usergroups as hu ON h.id = hu.hostsId" +
-            "WHERE hu.usergroupsId IN" + 
-                "(SELECT usergroupsId FROM users_usergroups as uu JOIN users ON uu.usersId = users.id AND users.username = '" + self.posix_user + "');"
+        req = """SELECT h.name, h.hostname, h.port, hg.name as hostgroup FROM hosts as h
+            JOIN hosts_hostgroups as hh ON hh.hostsId = h.id
+            JOIN hostgroups as hg ON hg.id = hh.hostgroupsId
+            JOIN hosts_usergroups as hu ON h.id = hu.hostsId
+            WHERE hu.usergroupsId IN
+                (SELECT usergroupsId FROM users_usergroups as uu JOIN users ON uu.usersId = users.id AND users.username = '""" + self.posix_user + "');"
         try:
             res = {}
             cur = self.__db.cursor(mc.cursors.DictCursor)
@@ -90,7 +90,7 @@ class Mariadb(IdP):
                     'name': data["name"],
                     'fqdn': data["hostname"],
                     'ssh_port': data["port"],
-                    'hostgroups': list(data["hostgroup"])
+                    'hostgroups': [data["hostgroup"]]
                 }
             else:
                 if data["hostgroup"] not in self._allowed_ssh_hosts[data["name"]]["hostgroups"]:
