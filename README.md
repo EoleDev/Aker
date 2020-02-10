@@ -72,7 +72,7 @@ Python Modules:
 * Manually:
 - Aker can be setup on a FreeIPA client or indepentantly using json config file.
 
-	* Common Steps (FreeIPA or Json):
+	* Common Steps (FreeIPA or Json or Mariadb):
 
 		* Clone the repo
 		~~~
@@ -123,7 +123,7 @@ Python Modules:
 		      ssh_port = 22
 
 		      # Identity Provider to determine the list of available hosts
-		      # options shipped are IPA, Json. Default is IPA
+		      # options shipped are IPA, Json, Mariadb. Default is IPA
 		      idp = IPA
 		      hosts_file = /etc/aker/hosts.json
 
@@ -143,7 +143,7 @@ Python Modules:
 		      ssh_port = 22
 
 		      # Identity Provider to determine the list of available hosts
-		      # options shipped are IPA, Json. Default is IPA
+		      # options shipped are IPA, Json, Mariadb. Default is IPA
 		      idp = Json
 		      hosts_file = /etc/aker/hosts.json
 
@@ -153,6 +153,38 @@ Python Modules:
 		      ```
 		      
 	      * Edit /etc/aker/hosts.json to add users and hosts, a sample `hosts.json` file is provided .
+
+
+
+	* Choosing Mariadb:
+		* Create /etc/aker and copy /usr/bin/aker/aker.ini in it and edit it like below :
+
+		      ```
+		      [General]
+		      log_level = INFO
+		      ssh_port = 22
+
+		      # Identity Provider to determine the list of available hosts
+		      # options shipped are IPA, Json, Mariadb. Default is IPA
+		      idp = Mariadb
+		      hosts_file = /etc/aker/hosts.json
+
+		      # FreeIPA hostgroup name contatining Aker gateways
+		      # to be excluded from hosts presented to user
+		      gateway_group = gateways
+
+					[Mariadb]
+					# Set the mariadb connection parameters
+					host = "localhost"
+					user = "YOURUSER"
+					password = "YOURPASSWORD"
+					# The schema given with aker, create a default database named aker
+					database = "aker"
+		      ```
+
+				* Create the database using the script mariadb.sql in idp/Mariadb
+				* Create the users, hosts and groups in the database
+			
 			
 	
 ### Contributing
