@@ -157,6 +157,9 @@ Python Modules:
 
 
 	* Choosing Mariadb:
+		* Install mariadb client : yum intall mariadb
+		* Install some dependency for python module : yum install mariadb-devel gcc python-devel
+		* Install python library : pip install MySQL-python
 		* Create /etc/aker and copy /usr/bin/aker/aker.ini in it and edit it like below :
 
 		      ```
@@ -175,11 +178,11 @@ Python Modules:
 
 					[Mariadb]
 					# Set the mariadb connection parameters
-					host = "localhost"
-					user = "YOURUSER"
-					password = "YOURPASSWORD"
+					host = localhost
+					user = YOURUSER
+					password = YOURPASSWORD
 					# The schema given with aker, create a default database named aker
-					database = "aker"
+					database = aker
 		      ```
 
 				* Create the database using the script mariadb.sql in idp/Mariadb
