@@ -99,6 +99,6 @@ class Mariadb(IdP):
     def list_allowed(self):
         # is our list empty ?
         if not self._allowed_ssh_hosts:
-            self._load_user_hosts()
+            self._load_user_allowed_hosts()
         return self._allowed_ssh_hosts
 
