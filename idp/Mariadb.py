@@ -39,7 +39,7 @@ class Mariadb(IdP):
         except Exception as e:
             logging.error(
                 "MARIADB: Could not connect to database, error : {0}".format(
-                    e.message))
+                    e))
             return False
 
     def _init_mariadb(self):
@@ -75,7 +75,7 @@ class Mariadb(IdP):
             res = {}
             logging.error(
                     "Mariadb: Error retrieving data from mariadb {0}".format(
-                        e.message))
+                        e))
         else:
             self.__db.close()
         self._parse_hosts(res)
