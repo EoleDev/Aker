@@ -35,6 +35,7 @@ class Mariadb(IdP):
     def __connect(self):
         try:
             self.__db = mc.connect(self.__host, self.__user, self.__pass, self.__database)
+            logging.debug("Mariadb: Connection successfull")
             return True
         except Exception as e:
             logging.error(
@@ -55,6 +56,7 @@ class Mariadb(IdP):
     def _load_user_allowed_hosts(self):
         if not self.__connect():
             return
+        logging.debug("Mariadb: Loading all hosts for user {0} from {1}".format(self.posix_user, self.__database))
         req = """SELECT h.name, h.hostname, h.port, hg.name as hostgroup FROM hosts as h
             JOIN hosts_hostgroups as hh ON hh.hostsId = h.id
             JOIN hostgroups as hg ON hg.id = hh.hostgroupsId
@@ -86,6 +88,8 @@ class Mariadb(IdP):
         """
         for data in res:
             if data["name"] not in self._allowed_ssh_hosts :
+                logging.debug("Mariadb: Loading host {0} for user {1}".format(
+                    data["name"], self.posix_user))
                 self._allowed_ssh_hosts[data["name"]] = {
                     'name': data["name"],
                     'fqdn': data["hostname"],
